@@ -24,6 +24,8 @@ if [ -t 1 ]; then    # if terminal
   fi
 fi
 
+# Variables;
+easy_rsa="/home/$USER/easy-rsa"
 
 echo "${bold}${yellow}System will be updated${normal}"
 sleep 2
@@ -36,4 +38,28 @@ sudo apt install easy-rsa
 
 # step 2;
 # Preparing a Public Key Infrastructure Directory
+# To create a skeleton Public Key Infrastructure (PKI) on the CA Server.
+echo 'creating the easy-rsa directory...'
+sleep 1
+if [ -d "$easy_rsa" ]; then
+	echo "$easy_rsa have already existed!"
+else 
+	mkdir $easy_rsa
+	echo "$easy_rsa created!"
+fi
 
+# To use this directory to create symbolic links pointing to the easy-rsa package files that we’ve installed in the previous step.
+if [ -h "$easy_rsa" ]; then
+	echo "A symlink have already created with $easy_rsa"
+else
+	ln -s /usr/share/easy-rsa/* ${easy_rsa}
+	sleep 1
+	echo "/usr/share/easy-rsa/*   ------>   ${easy_rsa} (symlinked)"
+fi
+
+# To restrict access to your new PKI directory
+chmod 700 ${easy_rsa}
+cd ${easy_rsa}
+bash $easy_rsa/easyrsa init-pki
+
+# Step 3 — Creating a Certificate Authority
