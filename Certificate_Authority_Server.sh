@@ -63,3 +63,4 @@ cd ${easy_rsa}
 bash $easy_rsa/easyrsa init-pki
 
 # Step 3 — Creating a Certificate Authority
+
