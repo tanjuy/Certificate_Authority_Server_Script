@@ -63,4 +63,30 @@ cd ${easy_rsa}
 bash $easy_rsa/easyrsa init-pki
 
 # Step 3 — Creating a Certificate Authority
+echo 'Fill each prompt to reflect your own organization info.'
+echo 'The important part here is to ensure that you do not leave any of the values blank'
+read -p "Enter a Country: " country
+sed "s/^#set_var EASYRSA_REQ_COUNTRY\t\"US\"/set_var EASYRSA_REQ_COUNTRY\t\"${country}\"/" $easy_rsa/vars.example > $easy_rsa/vars
+read -p 'Enter a Province: ' province
+sed -i "s/^#set_var EASYRSA_REQ_PROVINCE\t\"California\"/set_var EASYRSA_REQ_PROVINCE\t\"${province}\"/" $easy_rsa/vars
+read -p 'Enter a City: ' city
+sed -i "s/^#set_var EASYRSA_REQ_CITY\t\"San Francisco\"/set_var EASYRSA_REQ_CITY\t\"${city}\"/" $easy_rsa/vars
+read -p 'Enter a Organization: ' org
+sed -i "s/^#set_var EASYRSA_REQ_ORG\t\"Copyleft Certificate Co\"/set_var EASYRSA_REQ_CITY\t\"${org}\"/" $easy_rsa/vars
+read -p 'Enter a Email: ' email
+sed -i "s/^#set_var EASYRSA_REQ_EMAIL\t\"me@example.net\"/set_var EASYRSA_REQ_CITY\t\"${email}\"/" $easy_rsa/vars
+read -p 'Enter a Organizational Unit: ' OU
+sed -i "s/^#set_var EASYRSA_REQ_OU\t\t\"My Organizational Unit\"/set_var EASYRSA_REQ_CITY\t\"${OU}\"/" $easy_rsa/vars
+
+sed -i 's/^#set_var EASYRSA_ALGO\t\trsa/set_var EASYRSA_ALGO\t\t"ec"/' $easy_rsa/vars
+sed -i 's/^#set_var EASYRSA_DIGEST\t\t"sha256"/set_var EASYRSA_DIGEST\t\t"sha512"/' $easy_rsa/vars
+
+echo "To create the root public and private key pair for your Certificate Authority"
+printf "In the output, you’ll see some lines about the OpenSSL version and you will be prompted to enter a passphrase for your key pair. 
+Be sure to choose a strong passphrase, and note it down somewhere safe. You will need to input the passphrase any time that you need to
+interact with your CA, for example to sign or revoke a certificate."
+read -p 'Write "nopass" for no-password or just press enter for password: ' nop
+bash $easy_rsa/easyrsa build-ca $nop
+
+# Step 4 - 
 
