@@ -49,7 +49,14 @@ else
 fi
 
 # To use this directory to create symbolic links pointing to the easy-rsa package files that we’ve installed in the previous step.
-if [ -h "$easy_rsa" ]; then
+:<< test_command_alternative
+if [[    # ------------------------------->   This is same as below if [  ] that is, test command
+	-h "$easy_rsa/easyrsa" &&
+	-L "$easy_rsa/openssl-easyrsa.cnf"
+   ]]; then
+test_command_alternative
+
+if [ -h "$easy_rsa/easyrsa" -a -h "$easy_rsa/openssl-easyrsa.cnf" ]; then
 	echo "A symlink have already created with $easy_rsa"
 else
 	ln -s /usr/share/easy-rsa/* ${easy_rsa}
@@ -89,4 +96,22 @@ read -p 'Write "nopass" for no-password or just press enter for password: ' nop
 bash $easy_rsa/easyrsa build-ca $nop
 
 # Step 4 - 
+read -p "Enter your disto [i.e: ubuntu, debain, rocky]: " distro
+
+case $distro in
+	ubuntu)
+		echo "Your distro is ubuntu"
+		read -p "Enter a target user[i.e: tanju]: " user
+		read -p 'Enter a target host[i.e: 192.168.1.6]: ' host
+		scp $easy_rsa/pki/ca.crt $user@$host:/usr/local/share/ca-certificates/
+		;;
+	rocky)
+		echo 'Your distro is rocky'
+		read -p "Enter a target user[i.e: tanju]: " user
+		read -p 'Enter a target host[i.e: 192.168.1.6]: ' host
+		scp $easy_rsa/pki/ca.crt $user@$host:/etc/pki/ca-trust/\source/anchors/
+		;;
+esac
+
+
 
