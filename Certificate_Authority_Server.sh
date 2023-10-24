@@ -96,22 +96,4 @@ read -p 'Write "nopass" for no-password or just press enter for password: ' nop
 bash $easy_rsa/easyrsa build-ca $nop
 
 # Step 4 - 
-read -p "Enter your disto [i.e: ubuntu, debain, rocky]: " distro
-
-case $distro in
-	ubuntu)
-		echo "Your distro is ubuntu"
-		read -p "Enter a target user[i.e: tanju]: " user
-		read -p 'Enter a target host[i.e: 192.168.1.6]: ' host
-		scp $easy_rsa/pki/ca.crt $user@$host:/usr/local/share/ca-certificates/
-		;;
-	rocky)
-		echo 'Your distro is rocky'
-		read -p "Enter a target user[i.e: tanju]: " user
-		read -p 'Enter a target host[i.e: 192.168.1.6]: ' host
-		scp $easy_rsa/pki/ca.crt $user@$host:/etc/pki/ca-trust/\source/anchors/
-		;;
-esac
-
-
 
