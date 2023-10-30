@@ -14,7 +14,8 @@ crt_to_host() {
                                 scp $easy_rsa/pki/ca.crt $user@$host:/usr/local/share/ca-certificates/
                                 printf "Run command on the target host: ${magenta}${bold}sudo update-ca-certificates${normal}"
                                 break
-                                ;;                                                                                                                                                             rocky|centos)
+                                ;;
+			rocky|centos)
                                 echo 'Your distro is rocky'
                                 read -p "Enter a target user[i.e: tanju]: " user
                                 read -p 'Enter a target host[i.e: 192.168.1.6]: ' host
