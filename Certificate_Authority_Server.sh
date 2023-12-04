@@ -92,8 +92,8 @@ echo "To create the root public and private key pair for your Certificate Author
 printf "In the output, you’ll see some lines about the OpenSSL version and you will be prompted to enter a passphrase for your key pair. 
 Be sure to choose a strong passphrase, and note it down somewhere safe. You will need to input the passphrase any time that you need to
 interact with your CA, for example to sign or revoke a certificate."
-read -p 'Write "nopass" for no-password or just press enter for password: ' nop
-bash $easy_rsa/easyrsa build-ca $nop
+# read -p 'Write "nopass" for no-password or just press enter for password: ' nop
+# bash $easy_rsa/easyrsa build-ca $nop
+bash $easy_rsa/easyrsa build-ca nopass
 
-# Step 4 - 
-
+# Step 4 -  Buradan yukarsı test edildi..........
